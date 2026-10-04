@@ -1,6 +1,13 @@
-function Login({ setIsLoggedIn }) {
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   function handleLogin() {
-    setIsLoggedIn(true);
+    login();
+    navigate("/dashboard");
   }
 
   return (

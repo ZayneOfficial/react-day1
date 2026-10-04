@@ -1,4 +1,4 @@
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
@@ -7,31 +7,37 @@ import Dashboard from "./pages/Dashboard";
 import Members from "./pages/Members";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-function App() {
-  
+function AppContent() {
+  const { isLoggedIn } = useAuth();
 
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Navbar />
+    <>
+      <Navbar />
 
-        <Routes>
-          <Route
-            path="/login"
-            element={<Login />}
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
+      <Routes>
+        <Route path="/login" element={<Login />} />
 
-              <Dashboard setIsLoggedIn={setIsLoggedIn} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
             </ProtectedRoute>
           }
         />
+
         <Route path="/members" element={<Members />} />
       </Routes>
-    </BrowserRouter>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
     </AuthProvider>
   );
 }
